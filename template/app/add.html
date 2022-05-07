@@ -78,17 +78,23 @@
               </span>
             </div>
           </nav>
-
-
+          <!-- content -->
           <div class="card-body p-5 text-center">
 
-            <div class="user_img" >
-              <img src="../img/user_icon.png" alt=":/" style="border: solid black; border-radius: 50%;">
-            </div>
-
-            {% for obj in posts%}
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="form-outline mb-4">
+                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="title" placeholder="title"/>
+              </div>
+  
+              <div class="form-outline mb-4">
+                <textarea type="text" id="typePasswordX-2" class="form-control form-control-lg" rows="8" name="content" placeholder="content"></textarea>
+              </div>
+  
+  
+            <button class="btn btn-dark btn-lg btn-block" type="submit">add post</button>
+          </form>
             
-            {% endfor %}
 
           </div>
         </div>
