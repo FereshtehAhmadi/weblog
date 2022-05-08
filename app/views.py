@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from app.models import Person, Post
+from app.models import Post
 from .forms import UserRegistrationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 
 def register(request):
@@ -15,53 +17,33 @@ def register(request):
         user_form = UserRegistrationForm()
         return render(request,'app/register.html',{'user_form': user_form})
 
+
 def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username =username, password= password)
+        if user is not None:
+            obj = User.objects.get(username= username)
+            return redirect('home', {'user': obj.username})
     return render(request, 'app/login.html')
-    
 
 
-# def login(request):
-#     if request.method == 'POST':
-#         userName = request.POST['username']
-#         password = request.POST['password']
-#         if Person.objects.filter(userName=userName).exists() == True:
-#             obj = Person.objects.get(userName=userName)
-#             if obj.password == password:
-#                 userName = request.session[obj.userName]
-#                 user = request.session[obj.id]
-#                 return redirect('home')
-#     return render(request, 'app/login.html')
+def home(request, user):
+    obj = User.objects.get(username= user)
+    content = {
+        'user': obj.username ,
+        'posts': Post.objects.all(),
+    }
+    return render(request, 'app/home.html', content)
 
 
-# def register(request):
-#     if request.method == 'POST':
-#         userName = request.POST['username']
-#         firstName = request.POST['fname']
-#         lastName = request.POST['lname']
-#         email = request.POST['email']
-#         password = request.POST['password']
-        
-#         p = Person(userName=userName, firstName=firstName, lastName=lastName, password=password, email=email)
-#         p.save()
-#         return redirect('login')
-    
-#     return render(request, 'app/register.html')
-
-
-
-# def home(request):
-#     content = {
-#         'posts': Post.objects.all(),
-#     }
-#     return render(request, 'app/home.html', content)
-
-
-# def add_post(request):
-#     if request.method == 'POST':
-#         title = request.POST['title']
-#         content = request.POST['content']
-#         p = Post(title=title, content=content)
-#         p.save()
-#         return redirect('home')
-#     return render(request, 'app/add.html')
+def add_post(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        p = Post(title=title, content=content)
+        p.save()
+        return redirect('home')
+    return render(request, 'app/add.html')
 

@@ -12,8 +12,8 @@ class UserRegistrationForm(forms.ModelForm):
         widgets = {
         'username' : forms.TextInput(attrs={'class': 'form-control'}),
         'first_name' : forms.TextInput(attrs={'class': 'form-control'}),
-        'last_name' : forms.TextInput(attrs={'class': 'form-control'}),
-        'email' : forms.TextInput(attrs={'class': 'form-control'}),
+        'last_name' : forms.TextInput(attrs={'class': 'form-control' ,}),
+        'email' : forms.TextInput(attrs={'class': 'form-control col-12', 'style': 'width: 100%'}),
     }
     
     def clean_password2(self):
@@ -22,7 +22,6 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
     
-
 
 
 # def register(request):
